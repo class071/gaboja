@@ -33,4 +33,8 @@ public class User {
         this.gender = gender;
         this.role = role;
     }
+
+    public void grantSellerRole(){
+        this.role = UserRole.SELLER;
+    }
 }
