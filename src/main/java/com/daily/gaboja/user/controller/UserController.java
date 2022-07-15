@@ -23,8 +23,8 @@ public class UserController {
         return ApiResponse.success(HttpStatus.OK, userService.getAccessToken(code));
     }
 
-    @GetMapping("/api/user/convert/{id}")
-    public ApiResponse<String> changeUserRole(@PathVariable Long id){
-        return ApiResponse.success(HttpStatus.OK, userService.changeUserRole(id));
+    @GetMapping("/api/user/convert")
+    public ApiResponse<String> changeUserRole(@RequestParam String b_no, @RequestParam Long id){
+        return ApiResponse.success(HttpStatus.OK, userService.requestSellerRole(b_no, id));
     }
 }

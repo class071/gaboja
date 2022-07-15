@@ -182,7 +182,12 @@ public class UserServiceImpl implements UserService {
         return loginResponse;
     }
 
-    public String changeUserRole(long id){
+    @Override
+    public String requestSellerRole(String b_no, long id){
+        return changeUserRole(id);
+    }
+
+    private String changeUserRole(long id){
         User user = userRepository.findById(id).orElseThrow(UserNotExistException::new);
         user.grantSellerRole();
         return user.getRole().toString();
