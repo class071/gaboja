@@ -2,9 +2,11 @@ package com.daily.gaboja.user.service;
 
 import com.daily.gaboja.jwt.TokenService;
 import com.daily.gaboja.user.constant.UserRole;
+import com.daily.gaboja.user.domain.User;
 import com.daily.gaboja.user.dto.LoginResponse;
 import com.daily.gaboja.user.dto.NaverProfile;
 import com.daily.gaboja.user.exception.ParseFailedException;
+import com.daily.gaboja.user.exception.UserNotExistException;
 import com.daily.gaboja.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -23,10 +25,11 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
@@ -37,6 +40,9 @@ public class UserServiceImpl implements UserService{
 
     @Value("${naver.secret}")
     private String NAVER_SECRET_KEY;
+
+    @Value("${data.apikey}")
+    private String DATA_APIKEY;
 
     @Override
     public String getCode() {
@@ -54,7 +60,7 @@ public class UserServiceImpl implements UserService{
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=" + NAVER_CLIENT_ID);
             sb.append("&redirect_uri=" + redirectURI);
-            sb.append("&state="+"10");
+            sb.append("&state=" + "10");
             bw.write(sb.toString());
             bw.flush();
 
@@ -62,20 +68,20 @@ public class UserServiceImpl implements UserService{
             String line = "";
             String result = "";
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 result += line;
             }
 
             return result;
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @Override
-    public LoginResponse getAccessToken(String code)  {
+    public LoginResponse getAccessToken(String code) {
         try {
             String apiURL = "https://nid.naver.com/oauth2.0/token";
 
@@ -98,7 +104,7 @@ public class UserServiceImpl implements UserService{
             String line = "";
             String result = "";
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 result += line;
             }
             System.out.println("result = " + result);
@@ -107,19 +113,19 @@ public class UserServiceImpl implements UserService{
             System.out.println("accessToken = " + accessToken);
             return loginWithAccessToken(accessToken);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new ParseFailedException();
         }
     }
 
-    private JSONObject parseJSON(String result){
+    private JSONObject parseJSON(String result) {
         try {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
 
             return jsonObject;
-        } catch(ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
             throw new ParseFailedException();
         }
@@ -156,21 +162,29 @@ public class UserServiceImpl implements UserService{
         String profile = (String) naver_account.get("profile_image");
         String gender = (String) naver_account.get("gender");
         String age = (String) naver_account.get("age");
+
         UserRole userRole = UserRole.CUSTOMER;
+
         NaverProfile naverProfile = new NaverProfile(name, email, profile, gender, age, userRole);
 
-        if(!userRepository.findByEmail(email).isPresent()){
+        if (!userRepository.findByEmail(email).isPresent()) {
             userRepository.save(naverProfile.toEntity());
         }
 
         return createJwtToken(email);
     }
 
-    public LoginResponse createJwtToken(String email){
+    public LoginResponse createJwtToken(String email) {
         String accessToken = tokenService.createAccessToken(email);
         String refreshToken = tokenService.createRefreshToken(email);
 
         LoginResponse loginResponse = new LoginResponse(accessToken, refreshToken);
         return loginResponse;
+    }
+
+    public String changeUserRole(long id){
+        User user = userRepository.findById(id).orElseThrow(UserNotExistException::new);
+        user.grantSellerRole();
+        return user.getRole().toString();
     }
 }

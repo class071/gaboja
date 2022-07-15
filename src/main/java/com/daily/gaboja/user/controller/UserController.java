@@ -5,9 +5,7 @@ import com.daily.gaboja.user.dto.LoginResponse;
 import com.daily.gaboja.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,4 +23,8 @@ public class UserController {
         return ApiResponse.success(HttpStatus.OK, userService.getAccessToken(code));
     }
 
+    @GetMapping("/api/user/convert/{id}")
+    public ApiResponse<String> changeUserRole(@PathVariable Long id){
+        return ApiResponse.success(HttpStatus.OK, userService.changeUserRole(id));
+    }
 }
