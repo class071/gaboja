@@ -7,5 +7,5 @@ public interface UserService {
     String getCode();
     LoginResponse getAccessToken(String code);
     LoginResponse loginWithAccessToken(String token);
-    String changeUserRole(long id);
+    String requestSellerRole(String b_no, long id);
 }
