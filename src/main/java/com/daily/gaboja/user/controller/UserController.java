@@ -14,17 +14,17 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/api/login/naver")
-    public String login(){
-        return userService.getCode();
+    public String login() {
+        return userService.getLoginCode();
     }
 
     @GetMapping("/api/login/naver/callback")
-    public ApiResponse<LoginResponse> callback_naver(@RequestParam String code){
+    public ApiResponse<LoginResponse> callback_naver(@RequestParam String code) {
         return ApiResponse.success(HttpStatus.OK, userService.getAccessToken(code));
     }
 
     @GetMapping("/api/user/convert")
-    public ApiResponse<String> changeUserRole(@RequestParam String b_no, @RequestParam Long id){
+    public ApiResponse<String> changeUserRole(@RequestParam String b_no, @RequestParam Long id) {
         return ApiResponse.success(HttpStatus.OK, userService.requestSellerRole(b_no, id));
     }
 }
