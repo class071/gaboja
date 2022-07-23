@@ -2,6 +2,7 @@ package com.daily.gaboja.jwt.config;
 
 import com.daily.gaboja.user.constant.UserRole;
 import com.daily.gaboja.user.domain.User;
+import com.daily.gaboja.user.exception.UserNotExistException;
 import com.daily.gaboja.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
-                .orElseGet(() -> new User(null, null, null, null, null, null));
+                .orElseThrow(UserNotExistException::new);
         Set<UserRole> userRole = new HashSet<>();
         userRole.add(user.getRole());
         return new CustomUserDetails(
