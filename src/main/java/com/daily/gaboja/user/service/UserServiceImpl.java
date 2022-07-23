@@ -44,11 +44,22 @@ public class UserServiceImpl implements UserService {
     @Value("${data.apikey}")
     private String DATA_APIKEY;
 
+    @Value("${naver.callback.url}")
+    private String NAVER_CALLBACK_URL;
+
+    @Value("${naver.login.code.url}")
+    private String NAVER_LOGIN_CODE_URL;
+
+    @Value("${naver.access.token.url}")
+    private String NAVER_ACCESS_TOKEN_URL;
+
+    @Value("${naver.get.userinfo.url}")
+    private String NAVER_GET_USERINFO_URL;
     @Override
-    public String getCode() {
+    public String getLoginCode() {
         try {
-            String redirectURI = URLEncoder.encode("http://localhost:8080/api/login/naver/callback", "UTF-8");
-            String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
+            String redirectURI = URLEncoder.encode(NAVER_CALLBACK_URL, "UTF-8");
+            String apiURL = NAVER_LOGIN_CODE_URL;
 
             URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -83,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginResponse getAccessToken(String code) {
         try {
-            String apiURL = "https://nid.naver.com/oauth2.0/token";
+            String apiURL = NAVER_ACCESS_TOKEN_URL;
 
             URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -148,7 +159,7 @@ public class UserServiceImpl implements UserService {
         });
 
         ResponseEntity<String> response = rt.exchange(
-                "https://openapi.naver.com/v1/nid/me",
+                NAVER_GET_USERINFO_URL,
                 HttpMethod.POST,
                 naverProfileRequest,
                 String.class
