@@ -4,7 +4,7 @@ import com.daily.gaboja.user.dto.LoginResponse;
 
 public interface UserService {
 
-    String getCode();
+    String getLoginCode();
     LoginResponse getAccessToken(String code);
     LoginResponse loginWithAccessToken(String token);
     String requestSellerRole(String b_no, long id);
