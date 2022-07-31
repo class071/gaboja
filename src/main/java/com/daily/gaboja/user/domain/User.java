@@ -3,6 +3,7 @@ package com.daily.gaboja.user.domain;
 import com.daily.gaboja.user.constant.UserRole;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class User {
 
     @Id
