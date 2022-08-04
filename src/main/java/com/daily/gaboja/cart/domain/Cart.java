@@ -13,14 +13,10 @@ import javax.persistence.*;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
