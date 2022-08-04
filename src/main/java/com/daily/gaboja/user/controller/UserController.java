@@ -23,6 +23,11 @@ public class UserController {
         return ApiResponse.success(HttpStatus.OK, userService.getAccessToken(code));
     }
 
+    @DeleteMapping("/api/user/{id}")
+    public void delete(@PathVariable long id) {
+        userService.delete(id);
+    }
+
     @GetMapping("/api/user/convert")
     public ApiResponse<String> changeUserRole(@RequestParam String b_no, @RequestParam Long id) {
         return ApiResponse.success(HttpStatus.OK, userService.requestSellerRole(b_no, id));
