@@ -1,16 +1,14 @@
 package com.daily.gaboja.user.domain;
 
+import com.daily.gaboja.cart.domain.Cart;
 import com.daily.gaboja.user.constant.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
+@Entity(name = "TABLE_USER")
 @Getter
 @NoArgsConstructor
 public class User {
@@ -29,7 +27,16 @@ public class User {
 
     private String email;
 
+    @Column(name = "USER_ROLE")
     private UserRole role;
+
+    @OneToOne(
+            mappedBy = "user",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private Cart cart;
 
     @Builder
     public User(String name, String email, String profile, String age, String gender, UserRole role) {
@@ -43,5 +50,9 @@ public class User {
 
     public void grantSellerRole() {
         this.role = UserRole.SELLER;
+    }
+
+    public void setCart(Cart cart){
+        this.cart = cart;
     }
 }
