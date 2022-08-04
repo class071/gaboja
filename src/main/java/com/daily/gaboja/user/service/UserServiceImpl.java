@@ -1,5 +1,9 @@
 package com.daily.gaboja.user.service;
 
+import com.daily.gaboja.cart.domain.Cart;
+import com.daily.gaboja.cart.dto.CartRegisterDto;
+import com.daily.gaboja.cart.exception.CartNotExistException;
+import com.daily.gaboja.cart.repository.CartRepository;
 import com.daily.gaboja.jwt.TokenService;
 import com.daily.gaboja.user.constant.UserRole;
 import com.daily.gaboja.user.domain.User;
@@ -32,6 +36,8 @@ import java.nio.charset.Charset;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final CartRepository cartRepository;
 
     private final TokenService tokenService;
 
@@ -177,9 +183,13 @@ public class UserServiceImpl implements UserService {
         UserRole userRole = UserRole.CUSTOMER;
 
         NaverProfile naverProfile = new NaverProfile(name, email, profile, gender, age, userRole);
-
+        CartRegisterDto cartRegisterDto;
         if (!userRepository.findByEmail(email).isPresent()) {
-            userRepository.save(naverProfile.toEntity());
+            User user = userRepository.save(naverProfile.toEntity());
+            cartRegisterDto = new CartRegisterDto(user.getId());
+            Cart cart = cartRegisterDto.toEntity(user);
+            cartRepository.save(cart);
+            user.setCart(cart);
         }
 
         return createJwtToken(email);
@@ -202,5 +212,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(UserNotExistException::new);
         user.grantSellerRole();
         return user.getRole().toString();
+    }
+
+    @Override
+    public void delete(long id){
+        userRepository.deleteById(id);
     }
 }
