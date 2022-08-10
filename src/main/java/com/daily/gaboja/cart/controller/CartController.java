@@ -32,7 +32,7 @@ public class CartController {
         return ApiResponse.success(HttpStatus.OK, cartService.get(userId));
     }
 
-    @PostMapping("/cart/add")
+    @PostMapping("/cart/update")
     public ApiResponse<CartReadResponseDto> update(@RequestBody @Valid CartUpdateRequestDto cartUpdateRequestDto){ // request: cartId, List<ProductLine>
         return ApiResponse.success(HttpStatus.OK, cartService.update(cartUpdateRequestDto));
     }
