@@ -1,6 +1,7 @@
 package com.daily.gaboja.cart.controller;
 
 import com.daily.gaboja.cart.dto.CartReadResponseDto;
+import com.daily.gaboja.cart.dto.CartUpdateRequestDto;
 import com.daily.gaboja.cart.service.CartService;
 import com.daily.gaboja.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,10 @@ public class CartController {
     @GetMapping("/cart/{userId}")
     public ApiResponse<CartReadResponseDto> get(@PathVariable Long userId){
         return ApiResponse.success(HttpStatus.OK, cartService.get(userId));
+    }
+
+    @PostMapping("/cart/add")
+    public ApiResponse<CartReadResponseDto> update(@RequestBody @Valid CartUpdateRequestDto cartUpdateRequestDto){ // request: cartId, List<ProductLine>
+        return ApiResponse.success(HttpStatus.OK, cartService.update(cartUpdateRequestDto));
     }
 }
