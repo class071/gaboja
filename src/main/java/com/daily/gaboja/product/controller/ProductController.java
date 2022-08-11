@@ -1,7 +1,7 @@
 package com.daily.gaboja.product.controller;
 
 import com.daily.gaboja.global.api.ApiResponse;
-화import com.daily.gaboja.product.dto.ProductCreateRequestDto;
+import com.daily.gaboja.product.dto.ProductCreateRequestDto;
 import com.daily.gaboja.product.dto.ProductResponseDto;
 import com.daily.gaboja.product.dto.ProductUpdateRequestDto;
 import com.daily.gaboja.product.service.ProductService;
