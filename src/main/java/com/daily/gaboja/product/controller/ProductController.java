@@ -1,14 +1,15 @@
 package com.daily.gaboja.product.controller;
 
 import com.daily.gaboja.global.api.ApiResponse;
-import com.daily.gaboja.product.dto.ProductCreateRequest;
-import com.daily.gaboja.product.dto.ProductResponse;
-import com.daily.gaboja.product.dto.ProductUpdateRequest;
+화import com.daily.gaboja.product.dto.ProductCreateRequestDto;
+import com.daily.gaboja.product.dto.ProductResponseDto;
+import com.daily.gaboja.product.dto.ProductUpdateRequestDto;
 import com.daily.gaboja.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,32 +19,32 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/api/product")
-    public ApiResponse<ProductResponse> add(@RequestBody ProductCreateRequest productCreateRequest) {
-        ProductResponse productResponse = productService.add(productCreateRequest);
-        return ApiResponse.success(HttpStatus.CREATED, productResponse);
+    public ApiResponse<ProductResponseDto> add(@Valid @RequestBody ProductCreateRequestDto productCreateRequestDto) {
+        ProductResponseDto productResponseDto = productService.add(productCreateRequestDto);
+        return ApiResponse.success(HttpStatus.CREATED, productResponseDto);
     }
 
     @PutMapping("/api/product/{id}")
-    public ApiResponse<ProductResponse> update(@PathVariable Long id, @RequestBody ProductUpdateRequest productUpdateRequest) {
-        ProductResponse productResponse = productService.update(id, productUpdateRequest);
-        return ApiResponse.success(HttpStatus.OK, productResponse);
+    public ApiResponse<ProductResponseDto> update(@PathVariable Long id, @Valid @RequestBody ProductUpdateRequestDto productUpdateRequestDto) {
+        ProductResponseDto productResponseDto = productService.update(id, productUpdateRequestDto);
+        return ApiResponse.success(HttpStatus.OK, productResponseDto);
     }
 
     @DeleteMapping("/api/product/{id}")
-    public ApiResponse<ProductResponse> remove(@PathVariable Long id) {
+    public ApiResponse<ProductResponseDto> remove(@PathVariable Long id) {
         productService.remove(id);
         return ApiResponse.success(HttpStatus.OK, id);
     }
 
     @GetMapping("/api/product/{id}")
-    public ApiResponse<ProductResponse> readOne(@PathVariable Long id) {
-        ProductResponse productResponse = productService.readOne(id);
-        return ApiResponse.success(HttpStatus.OK, productResponse);
+    public ApiResponse<ProductResponseDto> readOne(@PathVariable Long id) {
+        ProductResponseDto productResponseDto = productService.readOne(id);
+        return ApiResponse.success(HttpStatus.OK, productResponseDto);
     }
 
     @GetMapping("/api/product")
-    public ApiResponse<List<ProductResponse>> readAll() {
-        List<ProductResponse> productResponses = productService.readAll();
-        return ApiResponse.success(HttpStatus.OK, productResponses);
+    public ApiResponse<List<ProductResponseDto>> readAll() {
+        List<ProductResponseDto> productResponseDtos = productService.readAll();
+        return ApiResponse.success(HttpStatus.OK, productResponseDtos);
     }
 }
