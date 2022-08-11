@@ -4,7 +4,7 @@ import com.daily.gaboja.product.domain.Product;
 import lombok.Getter;
 
 @Getter
-public class ProductResponse {
+public class ProductResponseDto {
 
     private Long id;
 
@@ -16,7 +16,7 @@ public class ProductResponse {
 
     private String category;
 
-    public ProductResponse toDto(Product product) {
+    public ProductResponseDto toDto(Product product) {
         this.id = product.getId();
         this.name = product.getName();
         this.description = product.getDescription();

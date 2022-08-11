@@ -1,6 +1,5 @@
 package com.daily.gaboja.product.dto;
 
-import com.daily.gaboja.product.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductCreateRequest {
+public class ProductUpdateRequestDto {
 
     @NotBlank(message = "상품 이름을 입력하시오.")
     private String name;
@@ -24,13 +23,4 @@ public class ProductCreateRequest {
 
     @NotBlank(message = "상품 카테고리를 입력하시오.")
     private String category;
-
-    public Product toEntity() {
-        return Product.builder()
-                .name(name)
-                .description(description)
-                .stock(stock)
-                .category(category)
-                .build();
-    }
 }
