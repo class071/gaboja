@@ -1,9 +1,9 @@
 package com.daily.gaboja.product.service;
 
 import com.daily.gaboja.product.domain.Product;
-import com.daily.gaboja.product.dto.ProductCreateRequest;
-import com.daily.gaboja.product.dto.ProductResponse;
-import com.daily.gaboja.product.dto.ProductUpdateRequest;
+import com.daily.gaboja.product.dto.ProductCreateRequestDto;
+import com.daily.gaboja.product.dto.ProductResponseDto;
+import com.daily.gaboja.product.dto.ProductUpdateRequestDto;
 import com.daily.gaboja.product.exception.ProductNotExist;
 import com.daily.gaboja.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,22 +20,17 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public ProductResponse add(ProductCreateRequest productCreateRequest) {
-        Product newProduct = productRepository.save(productCreateRequest.toEntity());
-        ProductResponse response = new ProductResponse();
-        return response.toDto(newProduct);
+    public ProductResponseDto add(ProductCreateRequestDto productCreateRequestDto) {
+        Product newProduct = productRepository.save(productCreateRequestDto.toEntity());
+        return new ProductResponseDto().toDto(newProduct);
     }
 
     @Transactional
-    public ProductResponse update(Long id, ProductUpdateRequest productUpdateRequest) {
+    public ProductResponseDto update(Long id, ProductUpdateRequestDto productUpdateRequestDto) {
         Product updateProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotExist());
-        updateProduct.update(productUpdateRequest.getName(),
-                productUpdateRequest.getDescription(),
-                productUpdateRequest.getStock(),
-                productUpdateRequest.getCategory());
-        ProductResponse response = new ProductResponse();
-        return response.toDto(updateProduct);
+        updateProduct.update(productUpdateRequestDto);
+        return new ProductResponseDto().toDto(updateProduct);
     }
 
     @Transactional
@@ -45,18 +40,17 @@ public class ProductService {
         productRepository.delete(removeProduct);
     }
 
-    public ProductResponse readOne(Long id) {
+    public ProductResponseDto readOne(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotExist());
-        ProductResponse response = new ProductResponse();
-        return response.toDto(product);
+        return new ProductResponseDto().toDto(product);
     }
 
-    public List<ProductResponse> readAll() {
+    public List<ProductResponseDto> readAll() {
         List<Product> products = productRepository.findAll();
-        List<ProductResponse> productResponses = products.stream()
-                .map(product -> new ProductResponse().toDto(product))
+        List<ProductResponseDto> productResponsDtos = products.stream()
+                .map(product -> new ProductResponseDto().toDto(product))
                 .collect(Collectors.toList());
-        return productResponses;
+        return productResponsDtos;
     }
 }
