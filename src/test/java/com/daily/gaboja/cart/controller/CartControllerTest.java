@@ -46,6 +46,9 @@ public class CartControllerTest {
     private CartService cartService;
 
     @MockBean
+    private TokenService tokenService;
+
+    @MockBean
     private CustomUserDetailsService customUserDetailsService;
 
     private CartReadResponseDto cartReadResponseDto;
@@ -66,12 +69,10 @@ public class CartControllerTest {
     @Test
     public void update_test_fail() throws Exception {
         given(cartService.update(any())).willReturn(cartReadResponseDto);
-        mvc.perform(
-                post("/cart/update")
-                        .content("{ \"cartId\" : 1 }")
-                )
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("cartId","1");
+        mvc.perform(post("/cart/update")
+                        .params(params))
                 .andExpect(status().isBadRequest());
     }
 }
-// https://velog.io/@sa1341/Spring-Boot-MockBean%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EB%8B%A8%EC%9C%84-%ED%85%8C%EC%8A%A4%ED%8A%B8
-// https://goddaehee.tistory.com/212?category=367461
