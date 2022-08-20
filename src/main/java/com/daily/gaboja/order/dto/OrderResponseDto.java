@@ -2,14 +2,17 @@
 package com.daily.gaboja.order.dto;
 
 import com.daily.gaboja.order.constant.OrderState;
-import com.daily.gaboja.order.domain.Address;
 import com.daily.gaboja.order.domain.Order;
 import com.daily.gaboja.order.domain.ShippingInfo;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Embedded;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderResponseDto {
 
     @Embedded
