@@ -4,7 +4,6 @@ import com.daily.gaboja.order.constant.OrderState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.elasticsearch.cluster.metadata.AliasAction;
 
 import javax.persistence.*;
 
@@ -20,7 +19,7 @@ public class Order {
 
     private OrderState orderState;
 
-    private Long cartId; // 연관관계를 통한 cart 접근 필요 // cart 에 ProductLine 필요 // value 클래스 ProductLine 필요
+    private Long cartId;
 
     @Embedded
     private ShippingInfo shippingInfo;

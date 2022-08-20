@@ -33,6 +33,12 @@ public class OrderService {
         return toDto(order);
     }
 
+    public OrderResponseDto sendCartToOrder(OrderRequestDto orderRequestDto) {
+        Order order = buildOrder(orderRequestDto);
+        orderRepository.save(order);
+        return toDto(order);
+    }
+
     private Order findById(Long id) {
         return orderRepository.findById(id).orElseThrow(OrderNotExistException::new);
     }
@@ -42,14 +48,7 @@ public class OrderService {
         return orderResponseDto.toDto(order);
     }
 
-    public OrderResponseDto sendCartToOrder(OrderRequestDto orderRequestDto) {
-        Order order = produceOrder(orderRequestDto);
-        orderRepository.save(order);
-        OrderResponseDto orderResponseDto = new OrderResponseDto();
-        return orderResponseDto.toDto(order);
-    }
-
-    private Order produceOrder(OrderRequestDto orderRequestDto) {
+    private Order buildOrder(OrderRequestDto orderRequestDto) {
         Cart cart = cartRepository.findById(orderRequestDto.getCartId()).orElseThrow(CartNotExistException::new);
         int totalAmount = cart.getTotalAmounts();
         Order order = Order.builder()
