@@ -7,22 +7,23 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class CartReadResponseDto {
+public final class CartReadResponseDto {
 
-    private Long cartId;
+    private static Long cartId;
 
-    private Long userId;
+    private static Long userId;
 
-    private List<ProductLine> productLines;
+    private static List<ProductLine> productLines;
 
-    private int totalAmounts;
+    private static int totalAmounts;
 
-    public CartReadResponseDto toDto(Cart cart) {
-        this.cartId = cart.getId();
-        this.userId = cart.getUser().getId();
-        this.productLines = cart.getProducts();
-        this.totalAmounts = cart.getTotalAmounts();
+    public static CartReadResponseDto toDto(Cart cart) {
+        CartReadResponseDto cartReadResponseDto = new CartReadResponseDto();
+        cartId = cart.getId();
+        userId = cart.getUser().getId();
+        productLines = cart.getProducts();
+        totalAmounts = cart.getTotalAmounts();
 
-        return this;
+        return cartReadResponseDto;
     }
 }
