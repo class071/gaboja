@@ -22,6 +22,8 @@ public class OrderService {
 
     private final CartRepository cartRepository;
 
+    private OrderResponseDto orderResponseDto;
+
     public OrderResponseDto get(long orderId) {
         Order order = findById(orderId);
         return toDto(order);
@@ -44,7 +46,6 @@ public class OrderService {
     }
 
     private OrderResponseDto toDto(Order order) {
-        OrderResponseDto orderResponseDto = new OrderResponseDto();
         return orderResponseDto.toDto(order);
     }
 
