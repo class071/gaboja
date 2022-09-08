@@ -204,7 +204,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String requestSellerRole(String b_no, long id){
+    public String requestSellerRole(long id){
         return changeUserRole(id);
     }
 

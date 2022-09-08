@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/api/user/convert")
-    public ApiResponse<String> changeUserRole(@RequestParam String b_no, @RequestParam Long id) {
-        return ApiResponse.success(HttpStatus.OK, userService.requestSellerRole(b_no, id));
+    public ApiResponse<String> changeUserRole(@RequestParam Long id) {
+        return ApiResponse.success(HttpStatus.OK, userService.requestSellerRole(id));
     }
 }
