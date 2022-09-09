@@ -1,0 +1,60 @@
+= Spring Rest Docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[resource-post]]
+== USER DOMAIN
+
+[[resources-유저_로그인코드받기]]
+=== User 로그인 - 네이버 인가 코드 받기
+
+==== HTTP REQUEST
+include::{snippets}/유저_로그인코드받기/http-request.adoc[]
+
+==== HTTP RESPONSE
+include::{snippets}/유저_로그인코드받기/response-body.adoc[]
+
+[[resources-유저_로그인_네이버콜백]]
+=== User 로그인 - 네이버 인가 코드 통해 정보 요청 및 토큰 발급
+
+==== HTTP REQUEST
+include::{snippets}/유저_로그인_네이버콜백/http-request.adoc[]
+include::{snippets}/유저_로그인_네이버콜백/request-parameters.adoc[]
+
+==== HTTP RESPONSE
+include::{snippets}/유저_로그인_네이버콜백/response-body.adoc[]
+include::{snippets}/유저_로그인_네이버콜백/response-fields.adoc[]
+
+[[resource-유저_회원권한수정]]
+=== User 회원권한수정
+
+==== HTTP REQUEST
+include::{snippets}/유저_회원권한수정/http-request.adoc[]
+include::{snippets}/유저_회원권한수정/request-parameters.adoc[]
+
+==== HTTP RESPONSE
+include::{snippets}/유저_회원권한수정/response-body.adoc[]
+include::{snippets}/유저_회원권한수정/response-fields.adoc[]
+
+[[resource-유저_삭제]]
+=== User 삭제
+
+==== HTTP REQUEST
+include::{snippets}/유저_삭제/http-request.adoc[]
+
+==== HTTP RESPONSE
+include::{snippets}/유저_삭제/response-body.adoc[]
+
+[[resource-post]]
+== CART DOMAIN
+
+[[resources-장바구니_수정기능]]
+=== Cart 수정
+
+==== HTTP REQUEST
+include::{snippets}/장바구니_수정기능/request-fields.adoc[]
+
+==== HTTP RESPONSE
+include::{snippets}/장바구니_수정기능/response-fields.adoc[]
+
