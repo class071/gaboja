@@ -27,6 +27,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -39,10 +40,13 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.notNullValue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.notNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -106,25 +110,26 @@ public class CartControllerTest {
     }
 
     @Test
-    public void update_test_fail() throws Exception {
-        given(cartService.update(any())).willReturn(cartReadResponseDto);
-        mvc.perform(
-                        post("/cart/update")
-                                .param("cartId", String.valueOf(1L))
-                )
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
     public void update_test_success() throws Exception {
         CartUpdateRequestDto cartUpdateRequestDto = new CartUpdateRequestDto(1L, null);
-        mvc.perform(
-                post("/cart/update")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(cartUpdateRequestDto))
+        given(cartService.update(any())).willReturn(cartReadResponseDto);
+        mvc.perform(RestDocumentationRequestBuilders.post("/cart/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(cartUpdateRequestDto))
                 )
                 .andExpect(status().isOk())
-                .andDo(document("장바구니_수정기능"));
+                .andDo(document("장바구니_수정기능",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("cartId").description("수정할 장바구니 ID"),
+                                fieldWithPath("productLines").description("수정할 장바구니 상품목록")
+                        ),
+                        responseFields(
+                                fieldWithPath("httpStatus").description("상태 코드"),
+                                fieldWithPath("message").description("메세지 - 성공 시 null로 반환"),
+                                fieldWithPath("response").description("응답 객체")
+                        )));
     }
 
     public static String toJson(Object obj){

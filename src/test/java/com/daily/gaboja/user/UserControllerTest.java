@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
@@ -31,13 +32,12 @@ import static com.daily.gaboja.cart.CartControllerTest.toJson;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureRestDocs
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -60,8 +60,9 @@ public class UserControllerTest {
     private UserRepository userRepository;
 
     private User user;
+
     @BeforeEach
-    void setUp(){
+    void setUp() {
 
         user = User.builder()
                 .role(UserRole.CUSTOMER)
@@ -86,27 +87,56 @@ public class UserControllerTest {
     @Test
     public void callback_success() throws Exception {
         LoginResponse loginResponse = new LoginResponse("ACCESS_TOKEN", "REFRESH_TOKEN");
-        Map<String, String> map = new HashMap<>();
-        map.put("code","LOGIN_CODE");
         given(userServiceImpl.getAccessToken(any())).willReturn(loginResponse);
-        mvc.perform(get("/api/login/naver/callback?code=LOGIN_CODE")
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/login/naver/callback")
+                        .param("code", "LOGIN_CODE")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("유저_로그인_네이버콜백"));
+                .andDo(document("유저_로그인_네이버콜백",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestParameters(parameterWithName("code").description("네이버 인가코드")
+                        ),
+                        responseFields(
+                                fieldWithPath("httpStatus").description("상태 코드"),
+                                fieldWithPath("message").description("메세지 - 성공 시 null로 반환"),
+                                fieldWithPath("response").description("응답"),
+                                fieldWithPath("response.accessToken").description("액세스 토큰"),
+                                fieldWithPath("response.refreshToken").description("리프래시 토큰")
+                        )
+                ));
     }
 
     @Test
     public void delete_test() throws Exception {
-        mvc.perform(delete("/api/user/1"))
+        mvc.perform(RestDocumentationRequestBuilders.delete("/api/user/{id}", anyLong()))
                 .andExpect(status().isOk())
-                .andDo(document("유저_삭제"));
+                .andDo(document("유저_삭제",
+                        preprocessRequest(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("삭제할 유저 ID")
+                        )
+                ));
     }
 
     @Test
     public void covert_test() throws Exception {
         given(userServiceImpl.requestSellerRole(anyLong())).willReturn("USER_ROLE");
-        mvc.perform(get("/api/user/convert?id=1").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/user/convert", anyLong())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("id","1"))
                 .andExpect(status().isOk())
-                .andDo(document("유저_회원권한수정"));
+                .andDo(document("유저_회원권한수정",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestParameters(
+                                parameterWithName("id").description("권한을 수정해줄 유저 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("httpStatus").description("상태 코드"),
+                                fieldWithPath("message").description("메세지 - 성공 시 null로 반환"),
+                                fieldWithPath("response").description("수정된 회원의 권한")
+                        )
+                ));
     }
 }
