@@ -4,12 +4,14 @@ import com.daily.gaboja.order.constant.OrderState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity(name = "ORDER_TABLE")
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Order {
 
