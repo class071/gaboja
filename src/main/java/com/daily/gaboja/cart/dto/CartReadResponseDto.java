@@ -11,23 +11,23 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public final class CartReadResponseDto {
+@NoArgsConstructor
+public class CartReadResponseDto {
 
-    private static Long cartId;
+    private Long cartId;
 
-    private static Long userId;
+    private Long userId;
 
-    private static List<ProductLine> productLines;
+    private List<ProductLine> productLines;
 
-    private static int totalAmounts;
+    private int totalAmounts;
 
-    public static CartReadResponseDto toDto(Cart cart) {
-        CartReadResponseDto cartReadResponseDto = new CartReadResponseDto();
-        cartId = cart.getId();
-        userId = cart.getUser().getId();
-        productLines = cart.getProducts();
-        totalAmounts = cart.getTotalAmounts();
+    public CartReadResponseDto toDto(Cart cart) {
+        this.cartId = cart.getId();
+        this.userId = cart.getUser().getId();
+        this.productLines = cart.getProducts();
+        this.totalAmounts = cart.getTotalAmounts();
 
-        return cartReadResponseDto;
+        return this;
     }
 }
