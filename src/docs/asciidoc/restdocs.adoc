@@ -10,10 +10,10 @@
 === User 로그인 - 네이버 인가 코드 받기
 
 ==== HTTP REQUEST
-include::{snippets}/유저_로그인코드받기/http-request.adoc[]
+include::{snippets}/유저_로그인_인가코드받기/http-request.adoc[]
 
 ==== HTTP RESPONSE
-include::{snippets}/유저_로그인코드받기/response-body.adoc[]
+include::{snippets}/유저_로그인_인가코드받기/http-response.adoc[]
 
 [[resources-유저_로그인_네이버콜백]]
 === User 로그인 - 네이버 인가 코드 통해 정보 요청 및 토큰 발급
