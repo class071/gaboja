@@ -11,16 +11,10 @@ import com.daily.gaboja.jwt.config.CustomUserDetailsService;
 import com.daily.gaboja.user.constant.UserRole;
 import com.daily.gaboja.user.domain.User;
 import com.daily.gaboja.user.repository.UserRepository;
-import com.daily.gaboja.user.service.UserService;
-import com.daily.gaboja.user.service.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.common.recycler.Recycler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -29,15 +23,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.*;
@@ -45,10 +30,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -128,7 +110,11 @@ public class CartControllerTest {
                         responseFields(
                                 fieldWithPath("httpStatus").description("상태 코드"),
                                 fieldWithPath("message").description("메세지 - 성공 시 null로 반환"),
-                                fieldWithPath("response").description("응답 객체")
+                                fieldWithPath("response").description("응답 객체"),
+                                fieldWithPath("response.cartId").description("장바구니 ID"),
+                                fieldWithPath("response.userId").description("회원 ID"),
+                                fieldWithPath("response.productLines").description("상품 목록"),
+                                fieldWithPath("response.totalAmounts").description("총액")
                         )));
     }
 
