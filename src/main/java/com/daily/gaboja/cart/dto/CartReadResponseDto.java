@@ -20,7 +20,7 @@ public class CartReadResponseDto {
 
     private List<ProductLine> productLines;
 
-    private int totalAmounts;
+    private Integer totalAmounts;
 
     public CartReadResponseDto toDto(Cart cart) {
         this.cartId = cart.getId();
