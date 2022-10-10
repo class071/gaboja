@@ -27,7 +27,7 @@ public class Cart {
     private List<ProductLine> products;
 
     @ColumnDefault("0")
-    private int totalAmounts; // product 연결 후 set 해주는 로직 필요
+    private Integer totalAmounts; // product 연결 후 set 해주는 로직 필요
 
     @Builder
     public Cart(User user) {
@@ -39,7 +39,7 @@ public class Cart {
         this.totalAmounts = calculateTotalAmounts(newLines);
     }
 
-    private int calculateTotalAmounts(List<ProductLine> lines) {
+    private Integer calculateTotalAmounts(List<ProductLine> lines) {
         int sum = lines.stream()
                 .mapToInt(p -> p.getCost() * p.getQuantity()).sum();
         return sum;
