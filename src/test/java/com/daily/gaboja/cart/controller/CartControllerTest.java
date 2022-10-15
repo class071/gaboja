@@ -109,7 +109,11 @@ class CartControllerTest {
                         responseFields(
                                 fieldWithPath("httpStatus").description("상태 코드"),
                                 fieldWithPath("message").description("메세지 - 성공 시 null로 반환"),
-                                fieldWithPath("response").description("응답 객체")
+                                fieldWithPath("response").description("응답 객체"),
+                                fieldWithPath("response.cartId").description("장바구니 ID"),
+                                fieldWithPath("response.userId").description("회원 ID"),
+                                fieldWithPath("response.productLines").description("상품 목록"),
+                                fieldWithPath("response.totalAmounts").description("총액")
                         )));
     }
 
