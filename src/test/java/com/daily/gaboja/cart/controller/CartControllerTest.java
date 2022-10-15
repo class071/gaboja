@@ -1,6 +1,5 @@
-package com.daily.gaboja.cart;
+package com.daily.gaboja.cart.controller;
 
-import com.daily.gaboja.cart.controller.CartController;
 import com.daily.gaboja.cart.domain.Cart;
 import com.daily.gaboja.cart.dto.CartReadResponseDto;
 import com.daily.gaboja.cart.dto.CartUpdateRequestDto;
@@ -11,16 +10,10 @@ import com.daily.gaboja.jwt.config.CustomUserDetailsService;
 import com.daily.gaboja.user.constant.UserRole;
 import com.daily.gaboja.user.domain.User;
 import com.daily.gaboja.user.repository.UserRepository;
-import com.daily.gaboja.user.service.UserService;
-import com.daily.gaboja.user.service.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.common.recycler.Recycler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -29,15 +22,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.*;
@@ -45,17 +29,14 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @AutoConfigureRestDocs
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @WebMvcTest(CartController.class)
-public class CartControllerTest {
+class CartControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -101,7 +82,7 @@ public class CartControllerTest {
     }
 
     @Test
-    public void get_test_success() throws Exception {
+    void get_test_success() throws Exception {
         given(cartService.get(any())).willReturn(cartReadResponseDto);
         mvc.perform(get("/cart/1"))
                 .andExpect(status().isOk())
@@ -110,7 +91,7 @@ public class CartControllerTest {
     }
 
     @Test
-    public void update_test_success() throws Exception {
+    void update_test_success() throws Exception {
         CartUpdateRequestDto cartUpdateRequestDto = new CartUpdateRequestDto(1L, null);
         given(cartService.update(any())).willReturn(cartReadResponseDto);
         mvc.perform(RestDocumentationRequestBuilders.post("/cart/update")

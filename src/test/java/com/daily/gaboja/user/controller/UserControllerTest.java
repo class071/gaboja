@@ -1,21 +1,15 @@
-package com.daily.gaboja.user;
+package com.daily.gaboja.user.controller;
 
-import com.daily.gaboja.cart.controller.CartController;
-import com.daily.gaboja.cart.service.CartService;
 import com.daily.gaboja.jwt.TokenService;
 import com.daily.gaboja.jwt.config.CustomUserDetailsService;
 import com.daily.gaboja.user.constant.UserRole;
-import com.daily.gaboja.user.controller.UserController;
 import com.daily.gaboja.user.domain.User;
 import com.daily.gaboja.user.dto.LoginResponse;
-import com.daily.gaboja.user.dto.NaverProfile;
 import com.daily.gaboja.user.repository.UserRepository;
-import com.daily.gaboja.user.service.UserService;
 import com.daily.gaboja.user.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -25,24 +19,19 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.daily.gaboja.cart.CartControllerTest.toJson;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureRestDocs
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @WebMvcTest(UserController.class)
-public class UserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -77,7 +66,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void get_LoginCode_success() throws Exception {
+    void get_LoginCode_success() throws Exception {
         given(userServiceImpl.getLoginCode()).willReturn("LOGIN_CODE");
         mvc.perform(get("/api/login/naver"))
                 .andExpect(status().isOk())
@@ -85,7 +74,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void callback_success() throws Exception {
+    void callback_success() throws Exception {
         LoginResponse loginResponse = new LoginResponse("ACCESS_TOKEN", "REFRESH_TOKEN");
         given(userServiceImpl.getAccessToken(any())).willReturn(loginResponse);
         mvc.perform(RestDocumentationRequestBuilders.get("/api/login/naver/callback")
@@ -108,7 +97,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void delete_test() throws Exception {
+    void delete_test() throws Exception {
         mvc.perform(RestDocumentationRequestBuilders.delete("/api/user/{id}", anyLong()))
                 .andExpect(status().isOk())
                 .andDo(document("유저_삭제",
@@ -120,7 +109,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void covert_test() throws Exception {
+    void covert_test() throws Exception {
         given(userServiceImpl.requestSellerRole(anyLong())).willReturn("USER_ROLE");
         mvc.perform(RestDocumentationRequestBuilders.get("/api/user/convert", anyLong())
                         .contentType(MediaType.APPLICATION_JSON)
