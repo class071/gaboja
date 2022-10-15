@@ -4,6 +4,7 @@ import com.daily.gaboja.product.domain.Product;
 import com.daily.gaboja.product.dto.ProductCreateRequestDto;
 import com.daily.gaboja.product.dto.ProductResponseDto;
 import com.daily.gaboja.product.dto.ProductUpdateRequestDto;
+import com.daily.gaboja.product.exception.NoSuchProductExist;
 import com.daily.gaboja.product.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -77,6 +79,13 @@ class ProductServiceTest {
     }
 
     @Test
+    void 상품_조회_실패() {
+        given(productRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> productService.readOne(1L)).isInstanceOf(NoSuchProductExist.class);
+    }
+
+    @Test
     void 상품_전체조회_성공() {
         Product product1 = Product.builder()
                 .id(2L)
@@ -126,6 +135,13 @@ class ProductServiceTest {
     }
 
     @Test
+    void 상품_삭제_실패() {
+        given(productRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> productService.remove(1L)).isInstanceOf(NoSuchProductExist.class);
+    }
+
+    @Test
     void 상품_수정_성공() {
         Product product1 = Product.builder()
                 .id(2L)
@@ -145,5 +161,15 @@ class ProductServiceTest {
 
         assertThat(product1.getName()).isEqualTo(productUpdateRequestDto.getName());
         assertThat(product1.getDescription()).isEqualTo(productUpdateRequestDto.getDescription());
+    }
+
+    @Test
+    void 상품_수정_실패() {
+        ProductUpdateRequestDto productUpdateRequestDto = new ProductUpdateRequestDto(
+                "Test2", "Test2", 100L, "Test", 1000);
+
+        given(productRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> productService.update(1L, productUpdateRequestDto)).isInstanceOf(NoSuchProductExist.class);
     }
 }
