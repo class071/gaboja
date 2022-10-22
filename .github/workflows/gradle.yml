@@ -33,8 +33,9 @@ jobs:
       with:
         character set server: 'utf8'
         mysql database: 'gaboja'
+        mysql root password: ${{ secrets.RootPassword }}
         mysql user: root
-        mysql password: ${{ secrets.MYSQL_PASSWORD }}
+        mysql password: ${{ secrets.DatabasePassword }}
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
