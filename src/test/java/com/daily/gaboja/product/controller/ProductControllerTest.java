@@ -63,7 +63,7 @@ class ProductControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                         .content(toJson(productCreateRequestDto)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response.name").value("Test"))
                 .andExpect(jsonPath("$.response.stock").value(100L));
     }
