@@ -32,9 +32,8 @@ jobs:
       uses: samin/mysql-action@v1
       with:
         character set server: 'utf8'
-        mysql database: 'gaboja'
-        mysql user: root
-        mysql password: ${{ secrets.MYSQL_PASSWORD }}
+        collation server: 'utf8_general_ci'
+        mysql root password: ${{ secrets.RootPassword }}
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
