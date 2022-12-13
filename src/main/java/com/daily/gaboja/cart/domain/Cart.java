@@ -22,26 +22,25 @@ public class Cart {
     private User user;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    //@CollectionTable(name = "CART_PRODUCTS", joinColumns = @JoinColumn(name = "PRODUCT_ID"))
+    @CollectionTable(name = "CART_PRODUCTS", joinColumns = @JoinColumn(referencedColumnName = "id"))
     @Embedded
-    private List<ProductLine> products;
+    private List<CartItem> items;
 
     @ColumnDefault("0")
-    private Integer totalAmounts; // product 연결 후 set 해주는 로직 필요
+    private Integer totalAmounts;
 
     @Builder
     public Cart(User user) {
         this.user = user;
     }
 
-    public void changeProductLines(List<ProductLine> newLines) {
-        this.products = newLines;
-        this.totalAmounts = calculateTotalAmounts(newLines);
+    public void changeProductLines(List<CartItem> items) {
+        this.items = items;
+        this.totalAmounts = calculateTotalAmounts(items);
     }
 
-    private Integer calculateTotalAmounts(List<ProductLine> lines) {
-        int sum = lines.stream()
+    private Integer calculateTotalAmounts(List<CartItem> lines) {
+        return lines.stream()
                 .mapToInt(p -> p.getCost() * p.getQuantity()).sum();
-        return sum;
     }
 }
