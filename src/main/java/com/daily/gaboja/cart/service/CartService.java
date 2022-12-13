@@ -43,7 +43,7 @@ public class CartService {
     @Transactional
     public CartReadResponseDto update(CartUpdateRequestDto cartUpdateRequestDto) {
         Cart cart = cartRepository.findById(cartUpdateRequestDto.getCartId()).orElseThrow(CartNotExistException::new);
-        cart.changeProductLines(cartUpdateRequestDto.getProductLines());
+        cart.changeProductLines(cartUpdateRequestDto.getCartItems());
 
         CartReadResponseDto cartReadResponseDto = new CartReadResponseDto();
         return cartReadResponseDto.toDto(cart);
