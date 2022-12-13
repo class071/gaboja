@@ -1,6 +1,6 @@
 package com.daily.gaboja.cart.dto;
 
-import com.daily.gaboja.cart.domain.ProductLine;
+import com.daily.gaboja.cart.domain.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +18,5 @@ public class CartUpdateRequestDto {
     private Long cartId;
 
     @Nullable
-    private List<ProductLine> productLines;
+    private List<CartItem> cartItems;
 }
