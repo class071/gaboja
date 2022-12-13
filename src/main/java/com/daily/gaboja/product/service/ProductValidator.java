@@ -28,12 +28,8 @@ public class ProductValidator {
         Product product = productRepository.findById(id).orElseThrow(NoSuchProductExist::new);
         long stock = product.getStock();
         if (isAmountMoreThanStock(amount, stock)) {
-            throw new InvalidAmountException(findNameById(id));
+            throw new InvalidAmountException(product.getName());
         }
-    }
-
-    private String findNameById(Long id) {
-        return productRepository.findNameById(id);
     }
 
     private boolean isAmountMoreThanStock(long amount, long stock) {
