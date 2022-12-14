@@ -105,7 +105,7 @@ public class CartControllerTest {
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("cartId").description("수정할 장바구니 ID"),
-                                fieldWithPath("productLines").description("수정할 장바구니 상품목록")
+                                fieldWithPath("cartItems").description("수정할 장바구니 상품목록")
                         ),
                         responseFields(
                                 fieldWithPath("httpStatus").description("상태 코드"),
@@ -113,7 +113,7 @@ public class CartControllerTest {
                                 fieldWithPath("response").description("응답 객체"),
                                 fieldWithPath("response.cartId").description("장바구니 ID"),
                                 fieldWithPath("response.userId").description("회원 ID"),
-                                fieldWithPath("response.productLines").description("상품 목록"),
+                                fieldWithPath("response.cartItems").description("상품 목록"),
                                 fieldWithPath("response.totalAmounts").description("총액")
                         )));
     }
