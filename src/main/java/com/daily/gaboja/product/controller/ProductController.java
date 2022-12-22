@@ -3,6 +3,7 @@ package com.daily.gaboja.product.controller;
 import com.daily.gaboja.global.api.ApiResponse;
 import com.daily.gaboja.product.dto.ProductRequestDto;
 import com.daily.gaboja.product.dto.ProductResponseDto;
+import com.daily.gaboja.product.dto.ProductSearchRequestDto;
 import com.daily.gaboja.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,12 @@ public class ProductController {
     @GetMapping("/api/product")
     public ApiResponse<List<ProductResponseDto>> readAll() {
         List<ProductResponseDto> productResponseDtos = productService.readAll();
+        return ApiResponse.success(HttpStatus.OK, productResponseDtos);
+    }
+
+    @GetMapping("/api/product/search")
+    public ApiResponse<List<ProductResponseDto>> search(@Valid @RequestBody ProductSearchRequestDto productSearchRequestDto){
+        List<ProductResponseDto> productResponseDtos = productService.search(productSearchRequestDto);
         return ApiResponse.success(HttpStatus.OK, productResponseDtos);
     }
 }
