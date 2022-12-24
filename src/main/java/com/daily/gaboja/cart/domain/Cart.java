@@ -34,7 +34,7 @@ public class Cart {
         this.user = user;
     }
 
-    public void changeProductLines(List<CartItem> items) {
+    public void updateProductLines(List<CartItem> items) {
         this.items = items;
         this.totalAmounts = calculateTotalAmounts(items);
     }

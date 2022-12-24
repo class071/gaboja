@@ -36,16 +36,14 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public CartReadResponseDto get(Long userId) {
-        CartReadResponseDto dto = new CartReadResponseDto();
-        return dto.toDto(cartRepository.findById(userId).orElseThrow(CartNotExistException::new));
+        return CartReadResponseDto.from(cartRepository.findById(userId).orElseThrow(CartNotExistException::new));
     }
 
     @Transactional
     public CartReadResponseDto update(CartUpdateRequestDto cartUpdateRequestDto) {
         Cart cart = cartRepository.findById(cartUpdateRequestDto.getCartId()).orElseThrow(CartNotExistException::new);
-        cart.changeProductLines(cartUpdateRequestDto.getCartItems());
+        cart.updateProductLines(cartUpdateRequestDto.getCartItems());
 
-        CartReadResponseDto cartReadResponseDto = new CartReadResponseDto();
-        return cartReadResponseDto.toDto(cart);
+        return CartReadResponseDto.from(cart);
     }
 }
