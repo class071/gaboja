@@ -21,12 +21,14 @@ public class CartReadResponseDto {
 
     private Integer totalAmounts;
 
-    public CartReadResponseDto toDto(Cart cart) {
+    public CartReadResponseDto(Cart cart) {
         this.cartId = cart.getId();
         this.userId = cart.getUser().getId();
         this.cartItems = cart.getItems();
         this.totalAmounts = cart.getTotalAmounts();
+    }
 
-        return this;
+    public static CartReadResponseDto from(Cart cart) {
+        return new CartReadResponseDto(cart);
     }
 }
