@@ -1,5 +1,6 @@
 package com.daily.gaboja.user.service;
 
+import com.daily.gaboja.user.dto.NaverLoginDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -8,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface NaverLoginClient {
 
     @PostMapping
-    String loginWithAccessToken(@RequestHeader("Authorization") String token,
-                                      @RequestHeader("Content-type") String contentType);
+    NaverLoginDto loginWithAccessToken(@RequestHeader("Authorization") String token,
+                                       @RequestHeader("Content-type") String contentType);
 }
