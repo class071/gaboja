@@ -6,6 +6,7 @@ import com.daily.gaboja.cart.repository.CartRepository;
 import com.daily.gaboja.jwt.TokenService;
 import com.daily.gaboja.user.constant.UserRole;
 import com.daily.gaboja.user.domain.User;
+import com.daily.gaboja.user.dto.NaverLoginDto;
 import com.daily.gaboja.user.dto.LoginResponse;
 import com.daily.gaboja.user.dto.NaverProfile;
 import com.daily.gaboja.user.exception.ParseFailedException;
@@ -63,10 +64,8 @@ public class UserServiceImpl implements UserService {
         try {
             String result = naverAccessTokenClient.getAccessToken("authorization_code", NAVER_CLIENT_ID, NAVER_SECRET_KEY, code, "10");
 
-            System.out.println("result = " + result);
             JSONObject naverObject = parseJSON(result);
             String accessToken = (String) naverObject.get("access_token");
-            System.out.println("accessToken = " + accessToken);
 
             return loginWithAccessToken(accessToken);
 
@@ -90,21 +89,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginResponse loginWithAccessToken(String token) {
-        String result = naverLoginClient.loginWithAccessToken("Bearer " + token, "application/x-www-form-urlencoded;charset=utf-8");
-
-        JSONObject naver_response = parseJSON(result);
-        JSONObject naver_account = (JSONObject) naver_response.get("response");
-        String email = (String) naver_account.get("email");
-        String name = (String) naver_account.get("name");
-        String profile = (String) naver_account.get("profile_image");
-        String gender = (String) naver_account.get("gender");
-        String age = (String) naver_account.get("age");
+        NaverLoginDto naverLoginDto = naverLoginClient.loginWithAccessToken("Bearer " + token, "application/x-www-form-urlencoded;charset=utf-8");
 
         UserRole userRole = UserRole.CUSTOMER;
 
-        NaverProfile naverProfile = new NaverProfile(name, email, profile, gender, age, userRole);
+        NaverProfile naverProfile = new NaverProfile(naverLoginDto.getName(), naverLoginDto.getEmail(),
+                naverLoginDto.getProfile(), naverLoginDto.getGender(), naverLoginDto.getAge(), userRole);
         CartRegisterDto cartRegisterDto;
-        if (!userRepository.findByEmail(email).isPresent()) {
+        if (!userRepository.findByEmail(naverLoginDto.getEmail()).isPresent()) {
             User user = userRepository.save(naverProfile.toEntity());
             cartRegisterDto = new CartRegisterDto(user.getId());
             Cart cart = cartRegisterDto.toEntity(user);
@@ -112,7 +104,7 @@ public class UserServiceImpl implements UserService {
             user.setCart(cart);
         }
 
-        return createJwtToken(email);
+        return createJwtToken(naverLoginDto.getEmail());
     }
 
     public LoginResponse createJwtToken(String email) {
