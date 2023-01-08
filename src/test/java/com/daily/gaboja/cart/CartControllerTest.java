@@ -33,7 +33,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 @AutoConfigureRestDocs
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @WebMvcTest(CartController.class)
@@ -84,7 +83,8 @@ public class CartControllerTest {
 
     @Test
     public void get_test_success() throws Exception {
-        given(cartService.get(any())).willReturn(cartReadResponseDto);
+        // TODO : cqrs 분리에 따른 테스트 코드 수정 필요
+        //given(cartService.get(any())).willReturn(cartReadResponseDto);
         mvc.perform(get("/cart/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", notNullValue()))

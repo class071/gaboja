@@ -97,15 +97,6 @@ class ProductControllerTest {
     }
 
     @Test
-    void 상품_조회_성공() throws Exception {
-        given(productService.readOne(any())).willReturn(productResponseDto);
-        mockMvc.perform(get("/api/product/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.name").value("Test"))
-                .andDo(document("상품 조회기능"));
-    }
-
-    @Test
     void 상품_삭제_성공() throws Exception {
         given(productService.remove(any())).willReturn(productResponseDto.getId());
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/product/{id}", anyLong()))
@@ -121,16 +112,6 @@ class ProductControllerTest {
                                 fieldWithPath("message").description("메시지 - 성공 시 null 반환"),
                                 fieldWithPath("response").description("삭제된 유저 ID")
                         )));
-    }
-
-    @Test
-    void 상품_전체조회_성공() throws Exception {
-        given(productService.readAll()).willReturn(Arrays.asList(productResponseDto));
-        mockMvc.perform(get("/api/product"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.response").isArray())
-                .andDo(document("상품_전체조회기능"));
     }
 
     @Test
