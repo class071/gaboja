@@ -34,11 +34,6 @@ public class CartService {
         return userId;
     }
 
-    @Transactional(readOnly = true)
-    public CartReadResponseDto get(Long userId) {
-        return CartReadResponseDto.from(cartRepository.findById(userId).orElseThrow(CartNotExistException::new));
-    }
-
     @Transactional
     public CartReadResponseDto update(CartUpdateRequestDto cartUpdateRequestDto) {
         Cart cart = cartRepository.findById(cartUpdateRequestDto.getCartId()).orElseThrow(CartNotExistException::new);
