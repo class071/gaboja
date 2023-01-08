@@ -39,25 +39,4 @@ public class ProductService {
         productRepository.delete(removeProduct);
         return id;
     }
-
-    public ProductResponseDto readOne(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(NoSuchProductExist::new);
-        return new ProductResponseDto().toDto(product);
-    }
-
-    public List<ProductResponseDto> readAll() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .map(product -> new ProductResponseDto().toDto(product))
-                .toList();
-    }
-
-    public List<ProductResponseDto> search(ProductSearchRequestDto productSearchRequestDto){
-        ProductSearcher productSearcher = ProductSearcher.valueOf(productSearchRequestDto.getType());
-        List<Product> products = productSearcher.findProductByKeyword(productRepository, productSearchRequestDto.getKeyword());
-        return products.stream()
-                .map(product -> new ProductResponseDto().toDto(product))
-                .toList();
-    }
 }

@@ -29,11 +29,6 @@ public class OrderService {
 
     private OrderResponseDto orderResponseDto;
 
-    public OrderResponseDto get(long orderId) {
-        Order order = findById(orderId);
-        return toDto(order);
-    }
-
     public OrderResponseDto changeShippingInfo(ChangeInfoReqDto changeInfoReqDto) { // DTO : orderID, ShippingInfo
         Order order = findById(changeInfoReqDto.getOrderId());
         order.changeShippingInfo(changeInfoReqDto.getShippingInfo());

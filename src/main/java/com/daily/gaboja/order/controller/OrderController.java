@@ -17,11 +17,6 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("/order/{orderId}")
-    public ApiResponse<OrderResponseDto> get(@PathVariable Long orderId){
-        return ApiResponse.success(HttpStatus.OK, orderService.get(orderId));
-    }
-
     @PostMapping("/order/info")
     public ApiResponse<OrderResponseDto> changeInfo(@RequestBody @Valid ChangeInfoReqDto changeInfoReqDto){
         return ApiResponse.success(HttpStatus.OK, orderService.changeShippingInfo(changeInfoReqDto));

@@ -35,22 +35,4 @@ public class ProductController {
         productService.remove(id);
         return ApiResponse.success(HttpStatus.OK, id);
     }
-
-    @GetMapping("/api/product/{id}")
-    public ApiResponse<ProductResponseDto> readOne(@PathVariable Long id) {
-        ProductResponseDto productResponseDto = productService.readOne(id);
-        return ApiResponse.success(HttpStatus.OK, productResponseDto);
-    }
-
-    @GetMapping("/api/product")
-    public ApiResponse<List<ProductResponseDto>> readAll() {
-        List<ProductResponseDto> productResponseDtos = productService.readAll();
-        return ApiResponse.success(HttpStatus.OK, productResponseDtos);
-    }
-
-    @GetMapping("/api/product/search")
-    public ApiResponse<List<ProductResponseDto>> search(@Valid @RequestBody ProductSearchRequestDto productSearchRequestDto){
-        List<ProductResponseDto> productResponseDtos = productService.search(productSearchRequestDto);
-        return ApiResponse.success(HttpStatus.OK, productResponseDtos);
-    }
 }
