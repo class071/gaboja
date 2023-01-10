@@ -5,17 +5,11 @@
 
 gaboja는 상품 조회, 주문, 결제 등 쇼핑몰 기능을 제공하는 서비스입니다.
 
-### 서비스 로직 흐름
-
----
-
-- [ ] 플랫폼, 도메인 다이어그램 추가
-
 ### 프로젝트 구조
 
 ---
 
-- [ ] 전체 구조 다이어그램 추가
+![img.png](src/main/resources/img/img.png)
 
 ### 기술스택
 
@@ -79,7 +73,8 @@ Java 17, Gradle, Spring Boot 2.7.1, Spring Data JPA, Spring Security, MySQL, AWS
 
 - 배포 (Deployment)
   - [ ] AWS EC2 서버 이용
-  - [ ] Jenkins CI/CD
+  - [ ] Travis CI
+  - [ ] Jenkins CD
 
 - 배송 (Delivery)
 
