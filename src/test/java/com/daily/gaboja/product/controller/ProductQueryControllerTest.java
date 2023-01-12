@@ -27,7 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureRestDocs
-@WebMvcTest(ProductController.class)
+@WebMvcTest(ProductQueryController.class)
 public class ProductQueryControllerTest {
 
     @Autowired

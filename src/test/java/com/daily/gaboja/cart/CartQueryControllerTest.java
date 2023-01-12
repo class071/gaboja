@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.daily.gaboja.cart.controller.CartController;
+import com.daily.gaboja.cart.controller.CartQueryController;
 import com.daily.gaboja.cart.domain.Cart;
 import com.daily.gaboja.cart.dto.CartReadResponseDto;
 import com.daily.gaboja.cart.repository.CartRepository;
@@ -31,7 +32,7 @@ import static org.mockito.BDDMockito.given;
 
 @AutoConfigureRestDocs
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@WebMvcTest(CartController.class)
+@WebMvcTest(CartQueryController.class)
 public class CartQueryControllerTest {
 
     @Autowired
