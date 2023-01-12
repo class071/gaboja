@@ -9,6 +9,7 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductQueryController {
 
     private final ProductQueryService productQueryService;
@@ -33,7 +35,7 @@ public class ProductQueryController {
     }
 
     @GetMapping("/api/product/search")
-    public ApiResponse<List<ProductResponseDto>> search(@Valid @RequestBody ProductSearchRequestDto productSearchRequestDto){
+    public ApiResponse<List<ProductResponseDto>> search(@Valid @RequestBody ProductSearchRequestDto productSearchRequestDto) {
         List<ProductResponseDto> productResponseDtos = productQueryService.search(productSearchRequestDto);
         return ApiResponse.success(HttpStatus.OK, productResponseDtos);
     }
