@@ -24,13 +24,11 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureRestDocs
@@ -61,7 +59,7 @@ public class CartControllerTest {
     private Cart cart;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         cartReadResponseDto = new CartReadResponseDto();
         User user = User.builder()
                 .age("22")
@@ -79,16 +77,6 @@ public class CartControllerTest {
                 .build();
 
         cartRepository.save(cart);
-    }
-
-    @Test
-    public void get_test_success() throws Exception {
-        // TODO : cqrs 분리에 따른 테스트 코드 수정 필요
-        //given(cartService.get(any())).willReturn(cartReadResponseDto);
-        mvc.perform(get("/cart/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response", notNullValue()))
-                .andDo(document("장바구니_조회기능"));
     }
 
     @Test
@@ -118,10 +106,10 @@ public class CartControllerTest {
                         )));
     }
 
-    public static String toJson(Object obj){
-        try{
+    public static String toJson(Object obj) {
+        try {
             return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
